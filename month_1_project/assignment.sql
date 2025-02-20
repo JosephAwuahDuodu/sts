@@ -1,6 +1,20 @@
--- Active: 1737457327416@@127.0.0.1@5432@sts_project_1
--- GET ALL DATA
-select * from retail;
+-- ANALYSIS FOR RETAIL DATA
+
+-- PROCESS FLOW
+-- CREATE TABLE NAMED RETAIL
+CREATE TABLE retail (
+    Invoiceno VARCHAR(20),
+    Stockcode VARCHAR(20),
+    Description TEXT,
+    Quantity INT,
+    Invoicedate DATETIME,
+    Unitprice DECIMAL(10,2),
+    Customerid INT,
+    Country VARCHAR(50)
+);
+
+-- COPY DATA FROM CSV TO TABLE
+\copy retail from 'Retail_data.xlsx\ -\ Online\ Retail.csv' DELIMITER ',' CSV HEADER;
 
 -- GET UNIQUE PRODUCTS PURCHASED BY CLIENTS
 SELECT DISTINCT customerid, stockcode from retail GROUP BY (customerid, stockcode)
