@@ -1,5 +1,5 @@
 -- ANALYSIS FOR RETAIL DATA
-
+SELECT * FROM retail;
 -- PROCESS FLOW
 -- CREATE TABLE NAMED RETAIL
 CREATE TABLE retail (
@@ -20,10 +20,10 @@ CREATE TABLE retail (
 SELECT DISTINCT customerid, stockcode from retail GROUP BY (customerid, stockcode)
 
 -- CUSTOMERS WHO HAVE MADE ONLY 1 PURCHASE FROM THE COMPANY
-WITH getUniqueProducts AS (
-    SELECT customerid, count(DISTINCT Invoiceno) as unique_products from retail GROUP BY (customerid)
-)
-select * from getUniqueProducts WHERE unique_products = 1;
+-- WITH getUniqueProducts AS (
+    SELECT customerid, count(DISTINCT Invoiceno) as unique_products from retail GROUP BY (customerid) HAVING count(DISTINCT Invoiceno) = 1;
+-- )
+-- select * from getUniqueProducts WHERE unique_products = 1;
 
 -- PRODUCTS  THAT ARE COMMONLY BOUGHT TOGETHER
 SELECT 
@@ -31,7 +31,7 @@ SELECT
     s2.StockCode AS Product_2, 
     COUNT(*) AS purchase_count 
 FROM retail s1
-JOIN retail s2 ON s1.InvoiceNo = s2.InvoiceNo AND s1.StockCode <> s2.StockCode
+JOIN retail s2 ON s1.InvoiceNo = s2.InvoiceNo AND s1.StockCode > s2.StockCode
 GROUP BY Product_1, Product_2
 ORDER BY purchase_count DESC
 LIMIT 10;
@@ -75,5 +75,6 @@ SELECT
 FROM retail
 WHERE Country IN ('United Kingdom', 'France')
 GROUP BY StockCode
+-- HAVING UK_Sales > France_Sales
 ORDER BY Difference DESC
 LIMIT 10;
